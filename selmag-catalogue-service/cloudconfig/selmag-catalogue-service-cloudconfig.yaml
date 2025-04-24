@@ -1,0 +1,83 @@
+spring:
+  boot:
+    admin:
+      client:
+        enabled: false
+  #        instance:
+  #          name: catalogue-service
+  #          service-host-type: ip
+  #        url: http://localhost:8085
+  security:
+    #    user:
+    #      name: catalogue_service_user
+    #      password: '{noop}password'
+    #      roles:
+    #        - SERVICE
+    oauth2:
+      resourceserver:
+        jwt:
+          issuer-uri: http://172.17.0.1:8082/realms/selmag
+      client:
+        registration:
+          keycloak:
+            client-id: catalogue-service
+            client-secret: II3qI9OD8IewRtdzUsotnJM946WWq1OH
+            authorization-grant-type: client_credentials
+            scope:
+              - metrics_server
+          discovery:
+            provider: keycloak
+            client-id: catalogue-service
+            client-secret: II3qI9OD8IewRtdzUsotnJM946WWq1OH
+            authorization-grant-type: client_credentials
+            scope:
+              - discovery
+        provider:
+          keycloak:
+            issuer-uri: http://172.17.0.1:8082/realms/selmag
+
+  datasource:
+    url: jdbc:postgresql://localhost:5432/catalogue
+    username: bagyshan
+    password: 1
+    driver-class-name: org.postgresql.Driver
+  flyway:
+    schemas:
+      - public
+      - catalogue
+  jpa:
+    database-platform: org.hibernate.dialect.PostgreSQLDialect
+    show-sql: true
+logging:
+  level:
+    sql: debug
+springdoc:
+  swagger-ui:
+    oauth:
+      client-id: catalogue-service-swagger-ui
+      use-pkce-with-authorization-code-grant: true
+keycloak:
+  uri: http://172.17.0.1:8082
+management:
+  health:
+    livenessstate:
+      enabled: true
+    readinessstate:
+      enabled: true
+  endpoints:
+    web:
+      exposure:
+        include: '*'
+  zipkin:
+    tracing:
+      endpoint: http://172.17.0.1:9411/api/v2/spans
+  tracing:
+    sampling:
+      probability: 1.0
+
+eureka:
+  instance:
+    prefer-ip-address: true
+  client:
+    service-url:
+      defaultZone: http://localhost:8761/eureka/
