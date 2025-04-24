@@ -1,0 +1,82 @@
+selmag:
+  services:
+    catalogue:
+      uri: lb://selmag-catalogue-service
+      registration-id: keycloak
+#      username: catalogue_service_user
+#      password: password
+spring:
+  boot:
+    admin:
+      client:
+        enabled: false
+  #  boot:
+  #    admin:
+  #      client:
+  #        url: http://localhost:8085
+  #        instance:
+  #          name: manager-app
+  #          service-host-type: ip
+  #        enabled: true
+  datasource:
+    url: jdbc:postgresql://localhost:5433/manager
+    username: manager
+    password: manager
+    driver-class-name: org.postgresql.Driver
+  security:
+    oauth2:
+      resourceserver:
+        jwt:
+          issuer-uri: http://172.17.0.1:8082/realms/selmag
+      client:
+        provider:
+          keycloak:
+            issuer-uri: http://172.17.0.1:8082/realms/selmag
+            user-name-attribute: preferred_username
+        registration:
+          keycloak:
+            client-id: manager-app
+            client-secret: Ll2wRVMXBcfaCvbuVjjGxSLKhlaUBy5p
+            scope:
+              - openid
+              - view_catalogue
+              - edit_catalogue
+              - microprofile-jwt
+          metrics:
+            provider: keycloak
+            client-id: manager-app
+            client-secret: Ll2wRVMXBcfaCvbuVjjGxSLKhlaUBy5p
+            authorization-grant-type: client_credentials
+            scope:
+              - metrics_server
+          discovery:
+            provider: keycloak
+            client-id: manager-app
+            client-secret: Ll2wRVMXBcfaCvbuVjjGxSLKhlaUBy5p
+            authorization-grant-type: client_credentials
+            scope:
+              - discovery
+management:
+  health:
+    livenessstate:
+      enabled: true
+    readinessstate:
+      enabled: true
+  endpoints:
+    web:
+      exposure:
+        include: '*'
+  zipkin:
+    tracing:
+      endpoint: http://172.17.0.1:9411/api/v2/spans
+  tracing:
+    sampling:
+      probability: 1.0
+eureka:
+  instance:
+    prefer-ip-address: true
+  client:
+    register-with-eureka: true
+    fetch-registry: true
+    service-url:
+      defaultZone: http://localhost:8761/eureka/
