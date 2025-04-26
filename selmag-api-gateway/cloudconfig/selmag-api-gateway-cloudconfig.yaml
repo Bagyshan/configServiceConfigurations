@@ -6,6 +6,8 @@ spring:
           uri: lb://selmag-catalogue-service
           predicates:
             - Host=catalogue.api.selm.ag.172.17.0.1.nip.io
+          filters:
+            - AddResponseHeader=foo, bar
         - id: feedback-service-route
           uri: lb://selmag-feedback-service
           predicates:
@@ -55,11 +57,12 @@ management:
   tracing:
     sampling:
       probability: 1.0
+
 #eureka:
 #  instance:
 #    leaseRenewalIntervalInSeconds: 1
 #    leaseExpirationDurationInSeconds: 1
-#    prefer-ip-address: true
+#    hostname: 172.17.0.1
 #  client:
 #    service-url:
 #      defaultZone: http://172.17.0.1:8761/eureka/
@@ -69,9 +72,8 @@ eureka:
   instance:
     lease-renewal-interval-in-seconds: 1
     lease-expiration-duration-in-seconds: 1
-    prefer-ip-address: true
+    hostname: 172.17.0.1
   client:
     service-url:
       defaultZone: http://172.17.0.1:8761/eureka/
     registry-fetch-interval-seconds: 1
-    enabled: true
