@@ -35,8 +35,6 @@ spring:
             authorization-grant-type: client_credentials
             scope:
               - discovery
-  application:
-    name: selmag-api-gateway
   boot:
     admin:
       client:
@@ -71,7 +69,7 @@ eureka:
   instance:
     lease-renewal-interval-in-seconds: 1
     lease-expiration-duration-in-seconds: 1
-    hostname: 172.17.0.1
+    prefer-ip-address: true
   client:
     service-url:
       defaultZone: http://172.17.0.1:8761/eureka/
