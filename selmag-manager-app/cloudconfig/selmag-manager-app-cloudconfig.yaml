@@ -19,7 +19,7 @@ spring:
   #          service-host-type: ip
   #        enabled: true
   datasource:
-    url: jdbc:postgresql://172.17.0.1:5433/manager
+    url: jdbc:postgresql://manager-db:5433/manager
     username: manager
     password: manager
     driver-class-name: org.postgresql.Driver
